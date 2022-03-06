@@ -1,9 +1,11 @@
-import React from "react";
+import { useState, React } from "react";
+import { useDispatch } from "react-redux";
 import { Grid } from "@mui/material";
 import TrelloCard from "../trelloCards/trelloCard"
 import TrelloActionButton from "../TrelloActionButton/TrelloActionButton";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Droppable, Draggable } from "react-beautiful-dnd";
+import { changeText } from "../../actions/actions"
 import styled from "styled-components"
 
 import "./trelloList.scss"
@@ -18,7 +20,24 @@ const ListContainer = styled.div`
   `;
 
 const TrelloList = ({ title, cards, _id, index, position }) => {
+  let [titleText, setTitle] = useState(title);
+  const dispatch = useDispatch();
 
+  const changeTitleText = (e) => {
+    setTitle(titleText = e.target.value)
+  }
+  
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      e.currentTarget.setAttribute("readonly", "true")
+      dispatch(changeText(_id, titleText))
+    }
+  }
+
+  const removeAttribute = (e) => {
+    e.currentTarget.removeAttribute("readonly", "true")
+  }
 
   return (
     <Draggable draggableId={String(_id)} position={position} index={index}>
@@ -31,17 +50,29 @@ const TrelloList = ({ title, cards, _id, index, position }) => {
           <Droppable droppableId={String(_id)}>
             {provided => (
               <div {...provided.droppableProps} ref={provided.innerRef}>
-                <h4>{title}</h4>
+
+                <form>
+                  <input className="titleList"
+                    type="text"
+                    onChange={changeTitleText}
+                    onClick={removeAttribute}
+                    onKeyDown={handleKeyDown}
+                    id={_id}
+                    value={titleText}
+                    readOnly
+                  >
+                  </input>
+                </form>
                 <MoreHorizIcon />
-                {cards.map((card, index) => 
-                <Grid item xs={12} key={card.id} index={index}>
-                  <TrelloCard
-                    key={card.id}
-                    text={card.text}
-                    id={card.id}
-                    index={index}
-                  />
-                </Grid>       
+                {cards.map((card, index) =>
+                  <Grid item xs={12} key={card.id} index={index}>
+                    <TrelloCard
+                      key={card.id}
+                      text={card.text}
+                      id={card.id}
+                      index={index}
+                    />
+                  </Grid>
                 )}
                 {provided.placeholder}
                 <TrelloActionButton _id={_id} />

@@ -7,7 +7,7 @@ const initialState = {
     lists: [
         {
             title: "IN PROGRESS",
-            listId: `list-${0}`,
+            listId: 0,
             cards: [
                 {
                     id: `card-${0}`,
@@ -25,7 +25,7 @@ const initialState = {
         },
         {
             title: "TO DO",
-            listId: `list-${1}`,
+            listId: 1,
             cards: [
                 {
                     id: `card-${3}`,
@@ -51,7 +51,7 @@ const initialState = {
         },
         {
             title: "TO DO2",
-            listId: `list-${2}`,
+            listId: 2,
             cards: [
                 {
                     id: `card-${8}`,
@@ -61,7 +61,7 @@ const initialState = {
                     id: `card-${9}`,
                     text: "created static 2"
                 },
-               
+
             ]
         },
     ]
@@ -71,7 +71,6 @@ export const listsReducer = (state = initialState, action) => {
 
     switch (action.type) {
         case CONSTANTS.ADD_LIST:
-            console.log(action.payload.text)
             const newList = {
                 title: action.payload.text,
                 listId: `list-${listId}`,
@@ -79,6 +78,21 @@ export const listsReducer = (state = initialState, action) => {
             }
             listId += 1
             return { ...state, lists: [...state.lists, newList] }
+
+        case CONSTANTS.CHANGE_TEXT: 
+        console.log('ok')
+            return {
+                ...state,
+                lists: state.lists.map(list => ({
+                    ...list, title: list.listId === action.payload.id ? action.payload.text : list.title
+                }))
+            }
+
+        // case CONSTANTS.CHANGE_TEXT:
+        //     const newTitle = state.lists.find(list => list.listId === action.payload.id)
+        //     const newText = newTitle.title = action.payload.text
+        //     console.log(newText)
+        //     return { ...state, newText }
 
         case CONSTANTS.ADD_CARD:
             const newCard = {
@@ -107,29 +121,29 @@ export const listsReducer = (state = initialState, action) => {
             const copyState = { ...state }
 
             if (type === "list") {
-                const list = copyState.splice(droppableIndexStart, 1);
-                copyState.splice(droppableIndexEnd, 0, ...list)
+                const list = copyState.splice(+droppableIndexStart, 1);
+                copyState.splice(+droppableIndexEnd, 0, ...list)
                 return copyState;
             }
 
             if (droppableIdStart === "all-lists") {
-                const list = copyState.lists.splice(droppableIndexStart, 1);
-                copyState.lists.splice(droppableIndexEnd, 0, ...list);
+                const list = copyState.lists.splice(+droppableIndexStart, 1);
+                copyState.lists.splice(+droppableIndexEnd, 0, ...list);
                 return copyState
             }
 
             if (droppableIdStart !== droppableIdEnd) {
-                const listStart = state.lists.find(list => droppableIdStart === list.listId)
-                const card = listStart.cards.splice(droppableIndexStart, 1)
-                const listEnd = state.lists.find(list => droppableIdEnd === list.listId)
-                listEnd.cards.splice(droppableIndexEnd, 0, ...card)
+                const listStart = state.lists.find(list => +droppableIdStart === list.listId)
+                const card = listStart.cards.splice(+droppableIndexStart, 1)
+                const listEnd = state.lists.find(list => +droppableIdEnd === list.listId)
+                listEnd.cards.splice(+droppableIndexEnd, 0, ...card)
             }
 
             if (droppableIdStart !== "all-lists") {
-                const list = state.lists.find(list => droppableIdStart === list.listId)
-                const card = list.cards.splice(droppableIndexStart, 1)
-                list.cards.splice(droppableIndexEnd, 0, ...card)
-                return { ...state, [droppableIdStart]: list };
+                const list = state.lists.find(list => +droppableIdStart === list.listId)
+                const card = list.cards.splice(+droppableIndexStart, 1)
+                list.cards.splice(+droppableIndexEnd, 0, ...card)
+                return { ...state, [+droppableIdStart]: list };
             }
 
             return copyState;

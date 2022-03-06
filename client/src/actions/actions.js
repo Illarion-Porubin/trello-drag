@@ -26,6 +26,22 @@ export function addCard(listId, text) {
     }
 }
 
+export function changeText(id, text) {
+    console.log(id, text)
+    return distpath => {
+        try {
+            distpath({
+                type: CONSTANTS.CHANGE_TEXT,
+                payload: { id, text }
+            });
+        } catch (error) {
+            console.log(error)
+        }
+    }
+}
+
+
+// drag and drop
 export const sort = (
     droppableIdStart,
     droppableIdEnd,
