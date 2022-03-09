@@ -5,7 +5,7 @@ import TrelloCard from "../trelloCards/trelloCard"
 import TrelloActionButton from "../TrelloActionButton/TrelloActionButton";
 import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
 import { Droppable, Draggable } from "react-beautiful-dnd";
-import { changeText } from "../../actions/actions"
+// import { changeText } from "../../actions/actions"
 import styled from "styled-components"
 
 import "./trelloList.scss"
@@ -27,13 +27,13 @@ const TrelloList = ({ title, cards, _id, index, position }) => {
     setTitle(titleText = e.target.value)
   }
   
-  const handleKeyDown = (e) => {
-    if (e.keyCode === 13) {
-      e.preventDefault()
-      e.currentTarget.setAttribute("readonly", "true")
-      dispatch(changeText(_id, titleText))
-    }
-  }
+  // const handleKeyDown = (e) => {
+  //   if (e.keyCode === 13) {
+  //     e.preventDefault()
+  //     e.currentTarget.setAttribute("readonly", "true")
+  //     dispatch(changeText(_id, titleText))
+  //   }
+  // }
 
   const removeAttribute = (e) => {
     e.currentTarget.removeAttribute("readonly", "true")
@@ -56,7 +56,7 @@ const TrelloList = ({ title, cards, _id, index, position }) => {
                     type="text"
                     onChange={changeTitleText}
                     onClick={removeAttribute}
-                    onKeyDown={handleKeyDown}
+                    // onKeyDown={handleKeyDown}
                     id={_id}
                     value={titleText}
                     readOnly
@@ -71,6 +71,7 @@ const TrelloList = ({ title, cards, _id, index, position }) => {
                       text={card.text}
                       id={card.id}
                       index={index}
+                      listId={card.listId}
                     />
                   </Grid>
                 )}

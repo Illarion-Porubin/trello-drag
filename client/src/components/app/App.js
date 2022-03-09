@@ -1,6 +1,7 @@
 import React from "react"
 import TrelloList from "../trelloList/trelloList"
 import Sidebar from "../sidebar/sidebar"
+import { useEffect } from "react";
 import { useSelector } from 'react-redux'
 import TrelloActionButton from "../TrelloActionButton/TrelloActionButton";
 import { DragDropContext, Droppable } from "react-beautiful-dnd"
@@ -20,6 +21,7 @@ function App() {
   const dispatch = useDispatch();
   const lists = useSelector(state => {
     const { listsReducer } = state;
+    console.log(listsReducer.lists)
     return listsReducer.lists
   })
 
@@ -37,6 +39,10 @@ function App() {
       type
     ))
   }
+
+  useEffect(() => {
+    dispatch(sort)
+}, [dispatch]);
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>

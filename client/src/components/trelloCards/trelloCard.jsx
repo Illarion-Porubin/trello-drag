@@ -7,13 +7,14 @@ import { Draggable } from 'react-beautiful-dnd';
 import styled from "styled-components"
 import EditIcon from '@mui/icons-material/Edit';
 import Grid from '@mui/material/Grid';
+import {XUITA}  from "../../actions/actions"
 import "./trelloCard.scss"
 
 const CardContainer = styled.div`
   margin-bottom: 8px;
 `
 
-const TrelloCard = ({ text, id, index }) => {
+const TrelloCard = ({ text, id, index, listId }) => {
   let [cardText, setCardText] = useState(text);
   let [styleCard, setCardStyle] = useState(true);
   const dispatch = useDispatch();
@@ -22,12 +23,14 @@ const TrelloCard = ({ text, id, index }) => {
     setCardText(cardText = e.target.value)
   }
 
-  // const handleKeyDown = (e) => {
-  //   if (e.keyCode === 13) {
-  //     e.currentTarget.setAttribute("readonly", "true")
-  //     dispatch(changeText(id, cardText))
-  //   }
-  // }
+  const handleKeyDown = (e) => {
+    if (e.keyCode === 13) {
+      e.preventDefault()
+      e.currentTarget.setAttribute("readonly", "true")
+      dispatch(XUITA(id, listId, cardText))
+    }
+  }
+
 
   const changeStyle = () => {
     setCardStyle(styleCard === true ? false : true)
@@ -57,12 +60,12 @@ const TrelloCard = ({ text, id, index }) => {
                     id={id}
                     value={cardText}
                     readOnly={styleCard}
-                    // onKeyDown={handleKeyDown}
+                    onKeyDown={handleKeyDown}
                     onChange={changeText}
                     onBlur={removeStyle}
                   />
                 </Typography>
-                <div className="[x]sueta"
+                <div className="icon"
                   onClick={changeStyle}
                   onBlur={removeStyle}
                 >

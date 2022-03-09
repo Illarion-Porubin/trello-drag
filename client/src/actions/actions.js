@@ -26,20 +26,20 @@ export function addCard(listId, text) {
     }
 }
 
-export function changeText(id, text) {
-    console.log(id, text)
+
+export function XUITA(id, listId, text) {
+    console.log(id, listId, text)
     return distpath => {
         try {
             distpath({
-                type: CONSTANTS.CHANGE_TEXT,
-                payload: { id, text }
+                type: CONSTANTS.CARD_TEXT,
+                payload: { id, listId, text }
             });
         } catch (error) {
             console.log(error)
         }
     }
 }
-
 
 // drag and drop
 export const sort = (

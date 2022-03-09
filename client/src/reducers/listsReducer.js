@@ -10,14 +10,17 @@ const initialState = {
             listId: 0,
             cards: [
                 {
+      
                     id: `card-${0}`,
                     text: "class "
                 },
                 {
+    
                     id: `card-${1}`,
                     text: "created static 2"
                 },
                 {
+
                     id: `card-${2}`,
                     text: "created static 3"
                 },
@@ -28,22 +31,27 @@ const initialState = {
             listId: 1,
             cards: [
                 {
+ 
                     id: `card-${3}`,
                     text: "created static 1"
                 },
                 {
+ 
                     id: `card-${4}`,
                     text: "created static 2"
                 },
                 {
+
                     id: `card-${5}`,
                     text: "created static 3"
                 },
                 {
+
                     id: `card-${6}`,
                     text: "created static 4"
                 },
                 {
+
                     id: `card-${7}`,
                     text: "created static 5"
                 }
@@ -54,10 +62,12 @@ const initialState = {
             listId: 2,
             cards: [
                 {
-                    id: `card-${8}`,
+
+                    id:`card-${8}`,
                     text: "created static 1"
                 },
                 {
+
                     id: `card-${9}`,
                     text: "created static 2"
                 },
@@ -79,14 +89,17 @@ export const listsReducer = (state = initialState, action) => {
             listId += 1
             return { ...state, lists: [...state.lists, newList] }
 
-        case CONSTANTS.CHANGE_TEXT: 
-        console.log('ok')
-            return {
-                ...state,
-                lists: state.lists.map(list => ({
-                    ...list, title: list.listId === action.payload.id ? action.payload.text : list.title
-                }))
-            }
+        case CONSTANTS.CARD_TEXT:
+            console.log('ok')
+            // let copy = { ...state }
+            let newTextCard = state.lists[0].cards.map(card => ({
+                ...card,
+                text: card.id === action.payload.id ? action.payload.text : card.text
+            }))
+            let list = state.lists[0].cards = newTextCard
+            return { ...state, ...list }
+
+
 
         // case CONSTANTS.CHANGE_TEXT:
         //     const newTitle = state.lists.find(list => list.listId === action.payload.id)
